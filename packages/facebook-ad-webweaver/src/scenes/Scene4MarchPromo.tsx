@@ -13,24 +13,19 @@ export const Scene4MarchPromo: React.FC = () => {
 	const frame = useCurrentFrame();
 	const {fps} = useVideoConfig();
 
-	// Pulsing urgency glow
-	const pulse = interpolate(Math.sin(frame * 0.15), [-1, 1], [0.85, 1]);
+	// Pulsing urgency effect
+	const pulse = interpolate(Math.sin(frame * 0.15), [-1, 1], [0.95, 1.05]);
 
 	const bannerSlide = spring({
 		fps,
-		frame: frame - 5,
+		frame: frame - 3,
 		config: {damping: 12, stiffness: 180, mass: 0.5},
-	});
-
-	const arrowBounce = spring({
-		fps,
-		frame: frame - 50,
-		config: {damping: 6, stiffness: 300, mass: 0.3},
 	});
 
 	return (
 		<AbsoluteFill
 			style={{
+				backgroundColor: COLORS.gold,
 				justifyContent: 'center',
 				alignItems: 'center',
 			}}
@@ -47,90 +42,84 @@ export const Scene4MarchPromo: React.FC = () => {
 				{/* EXCLUSIVE banner */}
 				<div
 					style={{
-						background: COLORS.gold,
-						padding: '20px 80px',
-						borderRadius: 16,
 						transform: `scaleX(${bannerSlide}) scale(${pulse})`,
 					}}
 				>
 					<div
 						style={{
 							fontFamily,
-							fontSize: 48,
+							fontSize: 56,
 							fontWeight: '900',
 							color: COLORS.navy,
-							letterSpacing: 6,
+							textAlign: 'center',
+							letterSpacing: 4,
 						}}
 					>
-						MARCH EXCLUSIVE
+						{'MARCH EXCLUSIVE 🎁'}
 					</div>
 				</div>
 
-				{/* Main offer text */}
-				<div style={{marginTop: 20}}>
+				{/* Decorative line */}
+				<div
+					style={{
+						width: 600 * bannerSlide,
+						height: 4,
+						backgroundColor: COLORS.navy,
+						borderRadius: 2,
+						opacity: 0.3,
+					}}
+				/>
+
+				{/* Main offer text — word by word */}
+				<div style={{marginTop: 12}}>
 					<WordByWord
-						text="Purchase a website before end of March"
-						fontSize={46}
+						text="Buy any website ="
+						fontSize={48}
 						color={COLORS.navy}
 						fontWeight="700"
 						delay={15}
-						wordDelay={2}
+						wordDelay={3}
 					/>
 				</div>
 
-				{/* Arrow */}
-				<PopIn delay={40}>
-					<div
-						style={{
-							fontFamily,
-							fontSize: 60,
-							color: COLORS.gold,
-							transform: `translateY(${(1 - arrowBounce) * 20}px)`,
-						}}
-					>
-						↓
-					</div>
-				</PopIn>
-
-				{/* FREE ads offer */}
-				<SlideIn delay={50} direction="up">
+				{/* FREE Ads highlight */}
+				<PopIn delay={35}>
 					<div
 						style={{
 							background: COLORS.navy,
 							borderRadius: 24,
-							padding: '36px 60px',
-							border: `4px solid ${COLORS.gold}`,
+							padding: '32px 64px',
 							transform: `scale(${pulse})`,
 						}}
 					>
 						<div
 							style={{
 								fontFamily,
-								fontSize: 58,
+								fontSize: 62,
 								fontWeight: '900',
 								color: COLORS.gold,
 								textAlign: 'center',
 							}}
 						>
-							Get 5 FREE Ads!
+							5 FREE Ads included
 						</div>
 					</div>
-				</SlideIn>
+				</PopIn>
 
 				{/* Subtext */}
-				<SlideIn delay={65} direction="up">
+				<SlideIn delay={55} direction="up">
 					<div
 						style={{
 							fontFamily,
 							fontSize: 32,
-							fontWeight: '600',
+							fontWeight: '700',
 							color: COLORS.navy,
 							textAlign: 'center',
-							opacity: 0.8,
+							opacity: 0.85,
 							marginTop: 12,
 						}}
 					>
-						Book now to claim your FREE demo.
+						Book your FREE demo before 31st March
 					</div>
 				</SlideIn>
 			</div>

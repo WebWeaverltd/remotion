@@ -15,7 +15,7 @@ export const WordByWord: React.FC<{
 	text,
 	fontSize = 64,
 	color = '#002244',
-	fontWeight = '800',
+	fontWeight = '900',
 	delay = 0,
 	wordDelay = 4,
 	textAlign = 'center',
@@ -50,7 +50,7 @@ export const WordByWord: React.FC<{
 						style={{
 							display: 'inline-block',
 							marginRight: fontSize * 0.25,
-							transform: `translateY(${(1 - wordSpring) * 40}px) scale(${0.8 + wordSpring * 0.2})`,
+							transform: `translateY(${(1 - wordSpring) * 50}px) scale(${0.7 + wordSpring * 0.3})`,
 							opacity: wordSpring,
 						}}
 					>
@@ -78,10 +78,10 @@ export const SlideIn: React.FC<{
 	});
 
 	const offsets = {
-		left: {x: -200, y: 0},
-		right: {x: 200, y: 0},
-		up: {x: 0, y: 100},
-		down: {x: 0, y: -100},
+		left: {x: -300, y: 0},
+		right: {x: 300, y: 0},
+		up: {x: 0, y: 120},
+		down: {x: 0, y: -120},
 	};
 
 	const offset = offsets[direction];
@@ -120,6 +120,33 @@ export const PopIn: React.FC<{
 			style={{
 				transform: `scale(${scale})`,
 				opacity: Math.min(scale * 2, 1),
+				...style,
+			}}
+		>
+			{children}
+		</div>
+	);
+};
+
+export const BounceIn: React.FC<{
+	readonly children: React.ReactNode;
+	readonly delay?: number;
+	readonly style?: React.CSSProperties;
+}> = ({children, delay = 0, style}) => {
+	const frame = useCurrentFrame();
+	const {fps} = useVideoConfig();
+
+	const scale = spring({
+		fps,
+		frame: frame - delay,
+		config: {damping: 8, stiffness: 200, mass: 0.5},
+	});
+
+	return (
+		<div
+			style={{
+				transform: `scale(${scale})`,
+				opacity: Math.min(scale * 3, 1),
 				...style,
 			}}
 		>

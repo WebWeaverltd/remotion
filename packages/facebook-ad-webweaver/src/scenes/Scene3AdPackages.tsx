@@ -5,10 +5,8 @@ import {COLORS, fontFamily} from '../lib/constants';
 
 const AdBullet: React.FC<{
 	readonly text: string;
-	readonly price: string;
 	readonly delay: number;
-	readonly index: number;
-}> = ({text, price, delay, index}) => {
+}> = ({text, delay}) => {
 	const frame = useCurrentFrame();
 	const {fps} = useVideoConfig();
 
@@ -18,8 +16,6 @@ const AdBullet: React.FC<{
 		config: {damping: 10, stiffness: 200, mass: 0.4},
 	});
 
-	const colors = [COLORS.accent, COLORS.navyLight, COLORS.navy];
-
 	return (
 		<div
 			style={{
@@ -27,22 +23,22 @@ const AdBullet: React.FC<{
 				opacity: Math.min(pop * 2, 1),
 				display: 'flex',
 				alignItems: 'center',
-				gap: 24,
+				gap: 28,
 				background: COLORS.white,
-				border: `3px solid ${colors[index % colors.length]}`,
+				border: `3px solid ${COLORS.navy}`,
 				borderRadius: 20,
-				padding: '32px 48px',
-				width: 820,
-				boxShadow: '0 6px 30px rgba(0, 34, 68, 0.1)',
+				padding: '34px 52px',
+				width: 840,
+				boxShadow: '0 6px 30px rgba(0, 34, 68, 0.08)',
 			}}
 		>
-			{/* Bullet dot */}
+			{/* Gold bullet dot */}
 			<div
 				style={{
-					width: 20,
-					height: 20,
+					width: 22,
+					height: 22,
 					borderRadius: '50%',
-					background: colors[index % colors.length],
+					background: COLORS.gold,
 					flexShrink: 0,
 				}}
 			/>
@@ -50,22 +46,12 @@ const AdBullet: React.FC<{
 				style={{
 					flex: 1,
 					fontFamily,
-					fontSize: 38,
+					fontSize: 40,
 					fontWeight: '700',
 					color: COLORS.navy,
 				}}
 			>
 				{text}
-			</div>
-			<div
-				style={{
-					fontFamily,
-					fontSize: 40,
-					fontWeight: '900',
-					color: colors[index % colors.length],
-				}}
-			>
-				{price}
 			</div>
 		</div>
 	);
@@ -75,6 +61,7 @@ export const Scene3AdPackages: React.FC = () => {
 	return (
 		<AbsoluteFill
 			style={{
+				backgroundColor: COLORS.white,
 				justifyContent: 'center',
 				alignItems: 'center',
 			}}
@@ -84,7 +71,7 @@ export const Scene3AdPackages: React.FC = () => {
 					display: 'flex',
 					flexDirection: 'column',
 					alignItems: 'center',
-					gap: 32,
+					gap: 28,
 					marginTop: -40,
 				}}
 			>
@@ -97,33 +84,34 @@ export const Scene3AdPackages: React.FC = () => {
 							fontWeight: '900',
 							color: COLORS.navy,
 							textAlign: 'center',
-							marginBottom: 8,
+							marginBottom: 12,
 						}}
 					>
-						Scale with Targeted Ads
+						Grow With Our Ad Packages
 					</div>
 				</SlideIn>
 
-				{/* Subtitle */}
-				<PopIn delay={10}>
+				{/* Ad bullets — staggered pop-in */}
+				<AdBullet text="10 Ads/mo — £150" delay={18} />
+				<AdBullet text="20 Ads/mo — £225" delay={30} />
+				<AdBullet text="30 Ads/mo — £275" delay={42} />
+
+				{/* Subtext */}
+				<PopIn delay={58}>
 					<div
 						style={{
 							fontFamily,
-							fontSize: 30,
-							fontWeight: '600',
-							color: COLORS.accent,
+							fontSize: 32,
+							fontWeight: '700',
+							color: COLORS.gold,
 							textAlign: 'center',
-							marginBottom: 16,
+							letterSpacing: 4,
+							marginTop: 20,
 						}}
 					>
-						Monthly packages to grow your business
+						Targeted. Managed. Converting.
 					</div>
 				</PopIn>
-
-				{/* Ad bullets */}
-				<AdBullet text="10 Ads" price="£150/mo" delay={20} index={0} />
-				<AdBullet text="20 Ads" price="£225/mo" delay={32} index={1} />
-				<AdBullet text="30 Ads" price="£275/mo" delay={44} index={2} />
 			</div>
 		</AbsoluteFill>
 	);

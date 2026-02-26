@@ -1,19 +1,15 @@
 import {loadFont} from '@remotion/google-fonts/Montserrat';
 
 export const {fontFamily} = loadFont('normal', {
-	weights: ['400', '600', '700', '800', '900'],
+	weights: ['400', '700', '900'],
 	subsets: ['latin'],
 });
 
 export const COLORS = {
 	navy: '#002244',
-	navyLight: '#003366',
 	white: '#FFFFFF',
-	offWhite: '#F8F9FA',
-	accent: '#0066CC',
 	gold: '#FFB800',
-	gridLine: 'rgba(0, 34, 68, 0.06)',
-	gridNode: 'rgba(0, 34, 68, 0.12)',
+	goldDark: '#E6A600',
 } as const;
 
 export const WIDTH = 1080;

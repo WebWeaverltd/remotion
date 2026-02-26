@@ -1,42 +1,37 @@
 import React from 'react';
-import {
-	AbsoluteFill,
-	interpolate,
-	spring,
-	useCurrentFrame,
-	useVideoConfig,
-} from 'remotion';
-import {SlideIn} from '../components/AnimatedText';
+import {AbsoluteFill, spring, useCurrentFrame, useVideoConfig} from 'remotion';
+import {BounceIn, SlideIn} from '../components/AnimatedText';
 import {COLORS, fontFamily} from '../lib/constants';
 
 const OfferCard: React.FC<{
 	readonly title: string;
 	readonly price: string;
+	readonly description: string;
 	readonly delay: number;
 	readonly direction: 'left' | 'right';
-}> = ({title, price, delay, direction}) => {
+}> = ({title, price, description, delay, direction}) => {
 	return (
 		<SlideIn delay={delay} direction={direction}>
 			<div
 				style={{
-					background: COLORS.white,
-					border: `3px solid ${COLORS.navy}`,
+					background: 'rgba(255, 255, 255, 0.1)',
+					border: '2px solid rgba(255, 255, 255, 0.25)',
 					borderRadius: 24,
-					padding: '40px 50px',
-					width: 860,
+					padding: '36px 44px',
+					width: 880,
 					display: 'flex',
 					flexDirection: 'column',
 					alignItems: 'center',
-					gap: 12,
-					boxShadow: '0 8px 40px rgba(0, 34, 68, 0.12)',
+					gap: 10,
+					backdropFilter: 'blur(10px)',
 				}}
 			>
 				<div
 					style={{
 						fontFamily,
-						fontSize: 38,
+						fontSize: 36,
 						fontWeight: '700',
-						color: COLORS.navy,
+						color: COLORS.white,
 					}}
 				>
 					{title}
@@ -44,12 +39,23 @@ const OfferCard: React.FC<{
 				<div
 					style={{
 						fontFamily,
-						fontSize: 56,
+						fontSize: 58,
 						fontWeight: '900',
-						color: COLORS.accent,
+						color: COLORS.gold,
 					}}
 				>
 					{price}
+				</div>
+				<div
+					style={{
+						fontFamily,
+						fontSize: 26,
+						fontWeight: '400',
+						color: 'rgba(255, 255, 255, 0.75)',
+						marginTop: 2,
+					}}
+				>
+					{description}
 				</div>
 			</div>
 		</SlideIn>
@@ -62,23 +68,14 @@ export const Scene2Offers: React.FC = () => {
 
 	const badgeScale = spring({
 		fps,
-		frame: frame - 55,
+		frame: frame - 60,
 		config: {damping: 8, stiffness: 200, mass: 0.5},
 	});
-
-	const badgeRotation = interpolate(
-		spring({
-			fps,
-			frame: frame - 55,
-			config: {damping: 12, stiffness: 150},
-		}),
-		[0, 1],
-		[-5, 0],
-	);
 
 	return (
 		<AbsoluteFill
 			style={{
+				backgroundColor: COLORS.navy,
 				justifyContent: 'center',
 				alignItems: 'center',
 			}}
@@ -88,8 +85,8 @@ export const Scene2Offers: React.FC = () => {
 					display: 'flex',
 					flexDirection: 'column',
 					alignItems: 'center',
-					gap: 36,
-					marginTop: -60,
+					gap: 28,
+					marginTop: -40,
 				}}
 			>
 				{/* Section title */}
@@ -97,14 +94,14 @@ export const Scene2Offers: React.FC = () => {
 					<div
 						style={{
 							fontFamily,
-							fontSize: 52,
+							fontSize: 56,
 							fontWeight: '900',
-							color: COLORS.navy,
+							color: COLORS.white,
 							textAlign: 'center',
-							marginBottom: 16,
+							marginBottom: 12,
 						}}
 					>
-						Our Website Packages
+						Our Websites
 					</div>
 				</SlideIn>
 
@@ -112,50 +109,43 @@ export const Scene2Offers: React.FC = () => {
 				<OfferCard
 					title="Landing Page"
 					price="£399.99"
-					delay={12}
+					description="Perfect for small businesses"
+					delay={14}
 					direction="left"
 				/>
 				<OfferCard
-					title="Custom 5+ Page Site"
+					title="Custom Website"
 					price="£799.99"
-					delay={24}
+					description="5+ pages, fully bespoke"
+					delay={26}
 					direction="right"
 				/>
 
 				{/* Hassle-free badge */}
-				<div
-					style={{
-						transform: `scale(${badgeScale}) rotate(${badgeRotation}deg)`,
-						background: COLORS.navy,
-						borderRadius: 20,
-						padding: '28px 50px',
-						marginTop: 20,
-					}}
-				>
+				<BounceIn delay={60}>
 					<div
 						style={{
-							fontFamily,
-							fontSize: 36,
-							fontWeight: '800',
-							color: COLORS.gold,
-							textAlign: 'center',
+							transform: `scale(${badgeScale > 0 ? 1 : 0})`,
+							background: COLORS.gold,
+							borderRadius: 50,
+							padding: '22px 56px',
+							marginTop: 16,
 						}}
 					>
-						100% Hassle-Free
+						<div
+							style={{
+								fontFamily,
+								fontSize: 30,
+								fontWeight: '900',
+								color: COLORS.navy,
+								textAlign: 'center',
+								letterSpacing: 1,
+							}}
+						>
+							{'Hassle-Free: Design → Build → Hosting ✓'}
+						</div>
 					</div>
-					<div
-						style={{
-							fontFamily,
-							fontSize: 26,
-							fontWeight: '600',
-							color: COLORS.white,
-							textAlign: 'center',
-							marginTop: 4,
-						}}
-					>
-						From Design to Hosting!
-					</div>
-				</div>
+				</BounceIn>
 			</div>
 		</AbsoluteFill>
 	);

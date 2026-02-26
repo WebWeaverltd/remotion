@@ -13,39 +13,43 @@ export const Scene5Outro: React.FC = () => {
 	const frame = useCurrentFrame();
 	const {fps} = useVideoConfig();
 
-	// Logo scale-up animation
+	// Logo scale-up with spring
 	const logoScale = spring({
 		fps,
-		frame: frame - 5,
+		frame: frame - 3,
 		config: {damping: 12, stiffness: 100, mass: 0.8},
 	});
 
-	// Brand text fade
-	const brandOpacity = spring({
+	// Brand text bounce
+	const textEntry = spring({
 		fps,
-		frame: frame - 25,
-		config: {damping: 20, stiffness: 100},
+		frame: frame - 22,
+		config: {damping: 10, stiffness: 180, mass: 0.5},
 	});
 
-	// CTA bounce
+	// CTA entry
 	const ctaEntry = spring({
 		fps,
-		frame: frame - 40,
+		frame: frame - 38,
 		config: {damping: 8, stiffness: 200, mass: 0.5},
 	});
 
-	// Continuous gentle bounce for CTA
-	const ctaBounce = interpolate(Math.sin(frame * 0.12), [-1, 1], [-4, 4]);
+	// CTA continuous pulse
+	const ctaPulse = interpolate(Math.sin(frame * 0.12), [-1, 1], [0.96, 1.04]);
 
-	// Subtle pulse for CTA background
-	const ctaPulse = interpolate(Math.sin(frame * 0.1), [-1, 1], [0.97, 1.03]);
+	// URL fade
+	const urlOpacity = spring({
+		fps,
+		frame: frame - 52,
+		config: {damping: 20, stiffness: 100},
+	});
 
 	return (
 		<AbsoluteFill
 			style={{
+				backgroundColor: COLORS.navy,
 				justifyContent: 'center',
 				alignItems: 'center',
-				backgroundColor: COLORS.white,
 			}}
 		>
 			<div
@@ -53,80 +57,64 @@ export const Scene5Outro: React.FC = () => {
 					display: 'flex',
 					flexDirection: 'column',
 					alignItems: 'center',
-					gap: 24,
+					gap: 20,
 					marginTop: -60,
 				}}
 			>
-				{/* Logo */}
-				<div
-					style={{
-						transform: `scale(${logoScale})`,
-					}}
-				>
-					<WebWeaverLogo size={280} />
+				{/* Logo — scale up smoothly */}
+				<div style={{transform: `scale(${logoScale})`}}>
+					<WebWeaverLogo size={260} color={COLORS.white} />
 				</div>
 
-				{/* Brand name */}
+				{/* Brand name — bounce in */}
 				<div
 					style={{
 						fontFamily,
-						fontSize: 64,
+						fontSize: 60,
 						fontWeight: '900',
-						color: COLORS.navy,
-						opacity: brandOpacity,
-						letterSpacing: 2,
-						marginTop: 16,
+						color: COLORS.white,
+						letterSpacing: 3,
+						marginTop: 20,
+						transform: `scale(${textEntry})`,
+						opacity: Math.min(textEntry * 2, 1),
 					}}
 				>
-					WebWeaver
+					WebWeaver Ltd
 				</div>
 
-				{/* Tagline */}
+				{/* CTA — pulses */}
 				<div
 					style={{
-						fontFamily,
-						fontSize: 28,
-						fontWeight: '600',
-						color: COLORS.navy,
-						opacity: brandOpacity * 0.7,
-					}}
-				>
-					Modern Web Design Agency
-				</div>
-
-				{/* CTA Button */}
-				<div
-					style={{
-						transform: `scale(${ctaEntry * ctaPulse}) translateY(${ctaBounce}px)`,
-						background: COLORS.navy,
+						transform: `scale(${ctaEntry * ctaPulse})`,
+						background: COLORS.gold,
 						borderRadius: 60,
-						padding: '28px 80px',
-						marginTop: 40,
-						boxShadow: '0 8px 40px rgba(0, 34, 68, 0.3)',
+						padding: '26px 72px',
+						marginTop: 32,
+						opacity: Math.min(ctaEntry * 2, 1),
 					}}
 				>
 					<div
 						style={{
 							fontFamily,
 							fontSize: 44,
-							fontWeight: '800',
-							color: COLORS.white,
+							fontWeight: '900',
+							color: COLORS.navy,
 							textAlign: 'center',
 						}}
 					>
-						Book a Call Now
+						{'Book a Call Now →'}
 					</div>
 				</div>
 
-				{/* Website URL */}
+				{/* URL — fade in */}
 				<div
 					style={{
 						fontFamily,
-						fontSize: 24,
-						fontWeight: '500',
-						color: COLORS.accent,
-						opacity: brandOpacity * 0.6,
-						marginTop: 16,
+						fontSize: 28,
+						fontWeight: '400',
+						color: 'rgba(255, 255, 255, 0.6)',
+						marginTop: 20,
+						opacity: urlOpacity,
 					}}
 				>
 					webweaverltd.co.uk
